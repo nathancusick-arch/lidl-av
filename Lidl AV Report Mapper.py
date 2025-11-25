@@ -9,8 +9,8 @@ st.write("""
           1. Export Lidl AV Alcohol - No ID data for the entire current round
           2. Drop the file in the below box, it should then give you the output file in your downloads
           3. Use following formulae to pull data through to the Lidl report:
-            =XLOOKUP($A4&"-"&RIGHT(D$3, 1), 'Lidl AV Raw Data.csv'!$W:$W, 'Lidl AV Raw Data.csv'!$O:$O)
-            =UPPER(XLOOKUP($A4&"-"&RIGHT(D$3, 1), 'Lidl AV Raw Data.csv'!$W:$W, 'Lidl AV Raw Data.csv'!$AJ:$AJ))
+            \n=XLOOKUP($A4&"-"&RIGHT(D$3, 1), 'Lidl AV Raw Data.csv'!$W:$W, 'Lidl AV Raw Data.csv'!$O:$O)
+            \n=UPPER(XLOOKUP($A4&"-"&RIGHT(D$3, 1), 'Lidl AV Raw Data.csv'!$W:$W, 'Lidl AV Raw Data.csv'!$AJ:$AJ))
           4. Copy and paste over values etc!!!
           5. Done.
           """)
