@@ -24,12 +24,20 @@ uploaded = st.file_uploader("Upload audits_basic_data_export.csv", type=["csv"])
 if uploaded:
 
     # ------------------------------------------------------------
-    # 1. Load input (unchanged, except uses uploaded file)
+    # 1. Load input
     # ------------------------------------------------------------
     df = pd.read_csv(uploaded, encoding="utf-8")
 
     # ------------------------------------------------------------
-    # 2. Parse date and time with correct formats (unchanged)
+    # 1a. Filter audits
+    # ------------------------------------------------------------
+    df = df[
+        (df["item_to_order"] == "Alcohol - No ID") &
+        (~df["order_schedule_type"].isin(["emergency", "emergency_weekly"]))
+    ]
+
+    # ------------------------------------------------------------
+    # 2. Parse date and time with correct formats
     # ------------------------------------------------------------
 
     # Strict DD/MM/YYYY
@@ -55,7 +63,7 @@ if uploaded:
     df["time_of_visit"] = df["time_of_visit"].apply(parse_time_to_str)
 
     # ------------------------------------------------------------
-    # 3. Sort chronologically (unchanged)
+    # 3. Sort chronologically
     # ------------------------------------------------------------
     df = df.sort_values(
         by=["date_of_visit", "time_of_visit"],
@@ -63,12 +71,12 @@ if uploaded:
     )
 
     # ------------------------------------------------------------
-    # 4. number_of_visits (unchanged)
+    # 4. number_of_visits
     # ------------------------------------------------------------
     df["number_of_visits"] = df.groupby("site_code").cumcount() + 1
 
     # ------------------------------------------------------------
-    # 5. site_code_visit_number (unchanged)
+    # 5. site_code_visit_number
     # ------------------------------------------------------------
     df["site_code_visit_number"] = (
         '="' +
@@ -79,7 +87,7 @@ if uploaded:
     )
 
     # ------------------------------------------------------------
-    # 6. Reorder columns (unchanged)
+    # 6. Reorder columns
     # ------------------------------------------------------------
     cols = list(df.columns)
 
@@ -94,7 +102,7 @@ if uploaded:
     df = df[cols]
 
     # ------------------------------------------------------------
-    # 7. Output (Streamlit version)
+    # 7. Output (Streamlit)
     # ------------------------------------------------------------
     output_bytes = io.BytesIO()
     df.to_csv(output_bytes, index=False, encoding="utf-8-sig")
